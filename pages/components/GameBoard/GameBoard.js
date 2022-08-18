@@ -13,7 +13,7 @@ function GameBoard(props) {
   for (let j = 0; j < boardSize; j++) {
     var rowArray =[];
     for (let i = 0; i < boardSize; i++) {
-      rowArray.push([0]);
+      rowArray.push(0);
     }
 
     initialArray.push(rowArray)
@@ -47,7 +47,7 @@ function GameBoard(props) {
                 {(() => {
                   let iCellArray = [];
                   for (let i = 0; i < boardSize; i++) {
-                    iCellArray.push(<GameCell key={j + '-' + i} clickState={getClickState} row={i} column={j} getArray={getArray} updateArray={updateArray}></GameCell>);
+                    iCellArray.push(<GameCell key={j + '-' + i} clickState={getClickState} row={j} column={i} getArray={getArray} updateArray={updateArray}></GameCell>);
                   }
                   return iCellArray;
                 })()}
