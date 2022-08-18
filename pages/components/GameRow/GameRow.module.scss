@@ -1,4 +1,9 @@
-
 .gameRow {
   display: flex;
+
+  &:nth-child(5n) {
+    &:not(:last-child) {
+      border-bottom: 3px solid black;
+    }
+  }
 }

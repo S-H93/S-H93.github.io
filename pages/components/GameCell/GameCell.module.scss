@@ -2,5 +2,30 @@
   width: 50px;
   height: 50px;
   cursor: pointer;
-  outline: 1px solid black;
+  border: 1px solid black;
+  margin-bottom: -1px;
+
+  &:nth-child(5n){
+    &:not(:last-child){
+      border-right: 3px solid black;
+    }
+  }
+}
+
+.filled {
+  background-color: rgb(39, 39, 39);
+}
+
+.crossed {
+  &:after {
+    content: "X";
+    color: black;
+    font-family: 'Arial', sans-serif;
+    font-size: 42px;
+    line-height: 51px;
+    text-align: center;
+    width: 100%;
+    margin: auto;
+    display: block;
+  }
 }

@@ -1,17 +1,7 @@
-.title {
-  color: purple;
-}
-
 .gameBoard {
   margin: 20px auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-}
-
-.gameCell {
-  width: 50px;
-  height: 50px;
-  outline: 1px solid black;
 }
