@@ -6,10 +6,21 @@ import GameCell from "../GameCell/GameCell";
 function GameBoard(props) {
   const boardSize = 10;
   const [getClickState, setClickState] = useState(0);
-  
-  const [getArray, setArray] = useState([]);
   // 1 = left click
   // 2 = right click
+
+  var initialArray = [];
+  for (let j = 0; j < boardSize; j++) {
+    var rowArray =[];
+    for (let i = 0; i < boardSize; i++) {
+      rowArray.push([0]);
+    }
+
+    initialArray.push(rowArray)
+  };
+  const [getArray, setArray] = useState(initialArray);
+
+  
 
   function handleMouseDown(e){
     if (e.button == 2) {
@@ -19,26 +30,31 @@ function GameBoard(props) {
     }
   }
 
+  function updateArray(row, column, newValue) {
+    let temp_array = getArray;
+    temp_array[row][column] = newValue;
+    setArray(temp_array);
+  }
 
-  var rowArray =[];
   return (
     <>
       <div className={styles.gameBoard} onMouseDown={handleMouseDown} onMouseUp={() => setClickState(0)}>
         {(() => {
-          for (let j = 1; j <= boardSize; j++) {
-            rowArray.push(
+          let iRowArray = [];
+          for (let j = 0; j < boardSize; j++) {
+            iRowArray.push(
               <GameRow className={styles.gameRow} key={j}>
                 {(() => {
-                  let cellArray = [];
-                  for (let i = 1; i <= boardSize; i++) {
-                    cellArray.push(<GameCell className={styles.gameCell} key={j + '-' + i} clickState={getClickState} rowArray={rowArray} row={i} column={j}></GameCell>);
+                  let iCellArray = [];
+                  for (let i = 0; i < boardSize; i++) {
+                    iCellArray.push(<GameCell key={j + '-' + i} clickState={getClickState} row={i} column={j} getArray={getArray} updateArray={updateArray}></GameCell>);
                   }
-                  return cellArray;
+                  return iCellArray;
                 })()}
               </GameRow>
             );
           }
-          return rowArray;
+          return iRowArray;
         })()}
       </div>
     </>
