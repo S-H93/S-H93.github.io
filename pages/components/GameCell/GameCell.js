@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./GameCell.module.scss";
 
 function GameCell(props) {
@@ -7,6 +7,10 @@ function GameCell(props) {
   // 0 = empty
   // 1 = filled
   // 2 = X
+
+  useEffect(() => {
+    setClass(getClass());
+  });
 
   function getClass(){
     return getArray[row][column];

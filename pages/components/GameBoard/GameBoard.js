@@ -18,9 +18,10 @@ function GameBoard(props) {
       rowArray.push(0);
     }
 
-    initialArray.push(rowArray);
+    initialArray.push([...rowArray]);
   }
-  const [getArray, setArray] = useState(initialArray);
+  const [getArray, setArray] = useState([...initialArray]);
+
 
   function handleMouseDown(e) {
     if (e.button == 2) {
@@ -33,7 +34,16 @@ function GameBoard(props) {
   function updateArray(row, column, newValue) {
     let temp_array = getArray;
     temp_array[row][column] = newValue;
-    setArray(temp_array);
+    setArray([...temp_array]);
+  }
+
+  function resetAll() {
+    for (let j = 0; j < boardSize; j++) {
+      for (let i = 0; i < boardSize; i++) {
+        updateArray(j, i, 0);
+      }
+    }
+    setBeforeTile(undefined);
   }
 
   return (
@@ -56,6 +66,9 @@ function GameBoard(props) {
           }
           return iRowArray;
         })()}
+      </div>
+      <div className={styles.buttons}>
+        <button onClick={resetAll}>Reset</button>
       </div>
     </>
   );
