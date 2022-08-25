@@ -6,6 +6,7 @@ import GameCell from "../GameCell/GameCell";
 function GameBoard(props) {
   const boardSize = 10;
   const [getClickState, setClickState] = useState(0);
+  const [getBeforeTile, setBeforeTile] = useState(undefined);
   // 1 = left click
   // 2 = right click
 
@@ -47,7 +48,7 @@ function GameBoard(props) {
                 {(() => {
                   let iCellArray = [];
                   for (let i = 0; i < boardSize; i++) {
-                    iCellArray.push(<GameCell key={j + '-' + i} clickState={getClickState} row={j} column={i} getArray={getArray} updateArray={updateArray}></GameCell>);
+                    iCellArray.push(<GameCell key={j + '-' + i} clickState={getClickState} row={j} column={i} getArray={getArray} updateArray={updateArray} getBeforeTile={getBeforeTile} setBeforeTile={setBeforeTile}></GameCell>);
                   }
                   return iCellArray;
                 })()}
