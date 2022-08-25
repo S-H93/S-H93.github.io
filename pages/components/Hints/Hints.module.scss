@@ -1,0 +1,26 @@
+.HintColumns {  
+  margin: 20px auto 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+  pointer-events: none;
+}
+
+.HintRows { 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 52px;
+  margin-top: 50px;
+  margin-left: -50%;
+  position: absolute;
+  top: 0;
+  text-align: center;
+  pointer-events: none;
+}

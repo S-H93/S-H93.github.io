@@ -1,0 +1,10 @@
+.HintCol {
+    width: 52px;
+    height: 52px;
+  
+    &:nth-child(5n){
+      &:not(:last-child){
+        margin-right: 3px;
+      }
+    }
+}

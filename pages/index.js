@@ -1,10 +1,10 @@
 // import Link from 'next/link'
-import GameBoard from './components/GameBoard/GameBoard.js'
+import Game from './components/Game/Game.js'
 
 const Index = () => {
   return (
     <>
-      <GameBoard />
+      <Game />
     </>
   )
 }

@@ -1,0 +1,11 @@
+.HintRow {
+    width: 52px;
+    height: 52px;
+    line-height: 52px;
+  
+    &:nth-child(5n){
+      &:not(:last-child){
+        margin-bottom: 3px;
+      }
+    }
+}

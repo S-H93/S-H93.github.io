@@ -2,31 +2,30 @@ import React, { useState } from "react";
 import styles from "./GameBoard.module.scss";
 import GameRow from "../GameRow/GameRow";
 import GameCell from "../GameCell/GameCell";
+// import HintRow from "../HintRow/HintRow";
+import HintCol from "../HintCol/HintCol";
 
 function GameBoard(props) {
-  const boardSize = 10;
-  const [getClickState, setClickState] = useState(0);
+  const { boardSize, getClickState, setClickState } = props;
   const [getBeforeTile, setBeforeTile] = useState(undefined);
   // 1 = left click
   // 2 = right click
 
   var initialArray = [];
   for (let j = 0; j < boardSize; j++) {
-    var rowArray =[];
+    var rowArray = [];
     for (let i = 0; i < boardSize; i++) {
       rowArray.push(0);
     }
 
-    initialArray.push(rowArray)
-  };
+    initialArray.push(rowArray);
+  }
   const [getArray, setArray] = useState(initialArray);
 
-  
-
-  function handleMouseDown(e){
+  function handleMouseDown(e) {
     if (e.button == 2) {
       setClickState(2);
-    } else{
+    } else {
       setClickState(1);
     }
   }
@@ -48,7 +47,7 @@ function GameBoard(props) {
                 {(() => {
                   let iCellArray = [];
                   for (let i = 0; i < boardSize; i++) {
-                    iCellArray.push(<GameCell key={j + '-' + i} clickState={getClickState} row={j} column={i} getArray={getArray} updateArray={updateArray} getBeforeTile={getBeforeTile} setBeforeTile={setBeforeTile}></GameCell>);
+                    iCellArray.push(<GameCell key={j + "-" + i} clickState={getClickState} row={j} column={i} getArray={getArray} updateArray={updateArray} getBeforeTile={getBeforeTile} setBeforeTile={setBeforeTile}></GameCell>);
                   }
                   return iCellArray;
                 })()}
