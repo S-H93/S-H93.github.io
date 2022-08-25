@@ -9,7 +9,12 @@ function GameCell(props) {
 
 
   function getClass(){
-    return getArray[row][column];
+    if(getArray && getArray[row]){
+      return getArray[row][column];
+    }
+    else {
+      return undefined;
+    }
   }
 
   function setClass(val){
