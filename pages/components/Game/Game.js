@@ -7,6 +7,7 @@ function Game(props) {
   const boardSize = 10;
   const columns = [[3], [3, 2], [2, 4], [4], [2], [2], [4], [1, 4], [1, 2, 2], [4]];
   const rows = [[3, 2], [3], [2, 2], [4], [4], [2, 2], [4, 1], [4, 2], [2, 2], [1]];
+  const solution = "1110000110111000000011000011000000011110000001111000110011000111100001011110001100110000110000000001";
   const [getClickState, setClickState] = useState(0);
 
 
@@ -19,7 +20,7 @@ function Game(props) {
     <>
       <div className={styles.gameCnt} onContextMenu={handleContextMenu} onMouseUp={() => setClickState(0)}>
         <Hints boardSize={boardSize} columns={columns} rows={rows} />
-        <GameBoard boardSize={boardSize} getClickState={getClickState} setClickState={setClickState} />
+        <GameBoard boardSize={boardSize} getClickState={getClickState} setClickState={setClickState} solution={solution} />
       </div>
     </>
   );

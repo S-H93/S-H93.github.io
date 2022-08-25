@@ -6,7 +6,7 @@ import GameCell from "../GameCell/GameCell";
 import HintCol from "../HintCol/HintCol";
 
 function GameBoard(props) {
-  const { boardSize, getClickState, setClickState } = props;
+  const { boardSize, getClickState, setClickState, solution } = props;
   const [getBeforeTile, setBeforeTile] = useState(undefined);
   // 1 = left click
   // 2 = right click
@@ -46,6 +46,14 @@ function GameBoard(props) {
     setBeforeTile(undefined);
   }
 
+  function checkSolution() {
+    if (getArray.toString().replaceAll(',','').replaceAll('2','0') == solution){
+      alert('Yay!');
+    } else {
+      alert('Nope!');
+    }
+  }
+
   return (
     <>
       <div className={styles.gameBoard} onMouseDown={handleMouseDown} onMouseUp={() => setClickState(0)}>
@@ -69,6 +77,7 @@ function GameBoard(props) {
       </div>
       <div className={styles.buttons}>
         <button onClick={resetAll}>Reset</button>
+        <button onClick={checkSolution}>Check</button>
       </div>
     </>
   );
