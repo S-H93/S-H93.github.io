@@ -19,7 +19,7 @@ function Hints(props) {
                   if(j == columns[i].length - 1){
                     hintArray.push(columns[i][j].toString());
                   }else{
-                    hintArray.push(columns[i][j].toString() + ", ");
+                    hintArray.push(columns[i][j].toString() + " ");
                   }
                 }
                 return hintArray;
@@ -41,7 +41,7 @@ function Hints(props) {
                   if(j == rows[i].length - 1){
                     hintArray.push(rows[i][j].toString());
                   }else{
-                    hintArray.push(rows[i][j].toString() + ", ");
+                    hintArray.push(rows[i][j].toString() + "　");
                   }
                 }
                 return hintArray;

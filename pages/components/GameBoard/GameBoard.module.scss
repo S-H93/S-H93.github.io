@@ -6,3 +6,23 @@
   align-items: center;
 }
 
+.buttons {
+  display: flex;
+
+  button{
+    font-size: 20px;
+
+    @media screen and (max-width: 767.9px) {
+      font-size: 16px;
+  
+    }
+
+    &:not(:last-child) {
+      margin-right: 20px;
+
+      @media screen and (max-width: 767.9px) {
+        margin-right: 10px;
+      }
+    }
+  }
+}

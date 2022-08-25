@@ -6,7 +6,9 @@ function HintCol(props) {
 
   return (
       <div className={styles.HintCol}>
-      { children }
+        <div className={styles.inner}>
+          { children }
+        </div>
       </div>
   );
 }

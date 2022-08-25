@@ -4,11 +4,17 @@
   justify-content: center;
   align-items: center;
   position: absolute;
-  top: 0;
+  top: -25px;
   left: 0;
   right: 0;
   text-align: center;
   pointer-events: none;
+  font-size: 16px;
+
+  @media screen and (max-width: 767.9px) {
+    top: 25px;
+    font-size: 12px;
+  }
 }
 
 .HintRows { 
@@ -18,9 +24,16 @@
   align-items: center;
   width: 52px;
   margin-top: 50px;
-  margin-left: -50%;
+  margin-left: -580px;
   position: absolute;
   top: 0;
   text-align: center;
   pointer-events: none;
+  font-size: 16px;
+
+  @media screen and (max-width: 767.9px) {
+    margin-left: -310px;
+    font-size: 12px;
+    width: 26px;
+  }
 }
