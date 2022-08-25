@@ -1,15 +1,14 @@
 .HintRow {
   width: 52px;
-  height: 52px;
+  height: 51px;
   line-height: 52px;
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  margin-right: 6px;
+  margin-right: 16px;
 
   &:nth-child(5n) {
     &:not(:last-child) {
-      margin-right: 3px;
       margin-bottom: 3px;
     }
   }
