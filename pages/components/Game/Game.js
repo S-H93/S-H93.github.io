@@ -10,15 +10,18 @@ function Game(props) {
   const solution = "1110000110111000000011000011000000011110000001111000110011000111100001011110001100110000110000000001";
   const [getClickState, setClickState] = useState(0);
 
-
   function handleContextMenu(e) {
     e.preventDefault();
     setClickState(0);
   }
 
+  function handleMouseUp(e) {
+    setClickState(0);
+  }
+
   return (
     <>
-      <div className={styles.gameCnt} onContextMenu={handleContextMenu} onMouseUp={() => setClickState(0)}>
+      <div className={styles.gameCnt} onContextMenu={handleContextMenu} onMouseUp={handleMouseUp} onTouchEnd={handleMouseUp}>
         <Hints boardSize={boardSize} columns={columns} rows={rows} />
         <GameBoard boardSize={boardSize} getClickState={getClickState} setClickState={setClickState} solution={solution} />
       </div>

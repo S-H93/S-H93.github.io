@@ -22,13 +22,16 @@ function GameBoard(props) {
   }
   const [getArray, setArray] = useState([...initialArray]);
 
-
   function handleMouseDown(e) {
     if (e.button == 2) {
       setClickState(2);
     } else {
       setClickState(1);
     }
+  }
+
+  function handleMouseUp(e) {
+    setClickState(0);
   }
 
   function updateArray(row, column, newValue) {
@@ -47,16 +50,16 @@ function GameBoard(props) {
   }
 
   function checkSolution() {
-    if (getArray.toString().replaceAll(',','').replaceAll('2','0') == solution){
-      alert('Yay!');
+    if (getArray.toString().replaceAll(",", "").replaceAll("2", "0") == solution) {
+      alert("Yay!");
     } else {
-      alert('Nope!');
+      alert("Nope!");
     }
   }
 
   return (
     <>
-      <div className={styles.gameBoard} onMouseDown={handleMouseDown} onMouseUp={() => setClickState(0)}>
+      <div className={styles.gameBoard} onMouseDown={handleMouseDown} onTouchStart={handleMouseDown} onMouseUp={handleMouseUp} onTouchEnd={handleMouseUp}>
         {(() => {
           let iRowArray = [];
           for (let j = 0; j < boardSize; j++) {
