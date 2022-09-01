@@ -50,12 +50,6 @@ function GameCell(props) {
     }
   }
 
-  function handleTouchMove(e) {
-    if (!isBeingTouched) {
-      handleEnter(e);
-      setBeingTouched(true);
-    }
-  }
 
   function handleMouseUp(e) {
     e.preventDefault();
@@ -63,7 +57,7 @@ function GameCell(props) {
     setBeingTouched(false);
   }
 
-  return <div className={`${styles.gameCell} ${getClass() == 1 ? styles.filled : getClass() == 2 ? styles.crossed : ""}`} onMouseDown={handleMouseDown} onTouchStart={handleMouseDown} onMouseEnter={handleEnter} onTouchMove={handleTouchMove} onMouseUp={handleMouseUp} onTouchEnd={handleMouseUp} onContextMenu={(e) => e.preventDefault()}></div>;
+  return <div className={`${styles.gameCell} ${getClass() == 1 ? styles.filled : getClass() == 2 ? styles.crossed : ""}`} onMouseDown={handleMouseDown} onTouchStart={handleMouseDown} onMouseEnter={handleEnter} onMouseUp={handleMouseUp} onTouchEnd={handleMouseUp} onContextMenu={(e) => e.preventDefault()}></div>;
 }
 
 export default GameCell;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import styles from "./GameBoard.module.scss";
 import GameRow from "../GameRow/GameRow";
 import GameCell from "../GameCell/GameCell";
@@ -6,6 +6,7 @@ import GameCell from "../GameCell/GameCell";
 import HintCol from "../HintCol/HintCol";
 
 function GameBoard(props) {
+  const boardRef = useRef(null);
   const { boardSize, getClickState, setClickState, solution } = props;
   const [getBeforeTile, setBeforeTile] = useState(undefined);
   // 1 = left click
@@ -34,10 +35,25 @@ function GameBoard(props) {
     setClickState(0);
   }
 
+
+  function handleTouchMove(e) {
+    let boardX = boardRef.current?.getBoundingClientRect().x;
+    //  console.log('BoardX: ' + boardX);
+    let boardY = boardRef.current?.getBoundingClientRect().y;
+    //  console.log('BoardY: ' + boardY);
+    if(getBeforeTile == 0) {
+      updateArray(Math.floor((e.touches[0].clientY - boardY) / 27), Math.floor((e.touches[0].clientX - boardX) / 27), 1);
+    } else {
+      updateArray(Math.floor((e.touches[0].clientY - boardY) / 27), Math.floor((e.touches[0].clientX - boardX) / 27), 0);
+    }
+  }
+
   function updateArray(row, column, newValue) {
     let temp_array = getArray;
-    temp_array[row][column] = newValue;
-    setArray([...temp_array]);
+    if(row < boardSize && column < boardSize && row > -1 && column > -1){
+      temp_array[row][column] = newValue;
+      setArray([...temp_array]);
+    }
   }
 
   function resetAll() {
@@ -59,7 +75,7 @@ function GameBoard(props) {
 
   return (
     <>
-      <div className={styles.gameBoard} onMouseDown={handleMouseDown} onTouchStart={handleMouseDown} onMouseUp={handleMouseUp} onTouchEnd={handleMouseUp}>
+      <div ref={boardRef} className={styles.gameBoard} onMouseDown={handleMouseDown} onTouchStart={handleMouseDown} onMouseUp={handleMouseUp} onTouchEnd={handleMouseUp} onTouchMove={handleTouchMove}>
         {(() => {
           let iRowArray = [];
           for (let j = 0; j < boardSize; j++) {
