@@ -7,8 +7,6 @@ function GameCell(props) {
   // 1 = filled
   // 2 = X
 
-  const [isBeingTouched, setBeingTouched] = useState(false);
-
   function getClass() {
     if (getArray && getArray[row]) {
       return getArray[row][column];
@@ -37,7 +35,6 @@ function GameCell(props) {
   function handleMouseUp(e) {
     e.preventDefault();
     setBeforeTile(undefined);
-    setBeingTouched(false);
   }
 
   return <div className={`${styles.gameCell} ${getClass() == 1 ? styles.filled : getClass() == 2 ? styles.crossed : ""}`} onMouseDown={handleMouseDown} onTouchStart={handleMouseDown} onMouseUp={handleMouseUp} onTouchEnd={handleMouseUp} onContextMenu={(e) => e.preventDefault()}></div>;

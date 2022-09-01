@@ -7,10 +7,10 @@ export default function useWindowDimensions() {
   function getWindowDimensions() {
     const width = hasWindow ? window.innerWidth : null;
     const height = hasWindow ? window.innerHeight : null;
-    return {
+    return [
       width,
       height,
-    };
+    ];
   }
 
   const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());

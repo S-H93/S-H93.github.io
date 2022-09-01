@@ -8,7 +8,7 @@ function GameBoard(props) {
   const boardRef = useRef(null);
   const { boardSize, getClickState, setClickState, solution } = props;
   const [getBeforeTile, setBeforeTile] = useState(undefined);
-  const { width } = useWindowDimensions();
+  const width = useWindowDimensions()[0];
   // 1 = left click
   // 2 = right click
   const [getTapFillMode, setTapFillMode] = useState(true);
