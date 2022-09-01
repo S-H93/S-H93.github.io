@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styles from "./GameCell.module.scss";
 
 function GameCell(props) {
-  const { clickState, getBeforeTile, setBeforeTile, row, column, getArray, updateArray } = props;
+  const { clickState, getBeforeTile, setBeforeTile, row, column, getArray, updateArray, getTapFillMode } = props;
   // 0 = empty
   // 1 = filled
   // 2 = X
@@ -26,7 +26,7 @@ function GameCell(props) {
       e.preventDefault();
     }
     setBeforeTile(getClass());
-    if (e.button == 2) {
+    if (e.button == 2 || !getTapFillMode) {
       // right click
       getClass() == 0 ? setClass(2) : setClass(0);
     } else {

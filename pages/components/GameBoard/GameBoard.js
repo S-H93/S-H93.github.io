@@ -2,15 +2,16 @@ import React, { useState, useRef } from "react";
 import styles from "./GameBoard.module.scss";
 import GameRow from "../GameRow/GameRow";
 import GameCell from "../GameCell/GameCell";
-// import HintRow from "../HintRow/HintRow";
-import HintCol from "../HintCol/HintCol";
+import useWindowDimensions from "../Util/useWindowDimensions";
 
 function GameBoard(props) {
   const boardRef = useRef(null);
   const { boardSize, getClickState, setClickState, solution } = props;
   const [getBeforeTile, setBeforeTile] = useState(undefined);
+  const { width } = useWindowDimensions();
   // 1 = left click
   // 2 = right click
+  const [getTapFillMode, setTapFillMode] = useState(true);
 
   var initialArray = [];
   for (let j = 0; j < boardSize; j++) {
@@ -37,14 +38,22 @@ function GameBoard(props) {
 
 
   function handleTouchMove(e) {
+    let tileSize = 27;
+    if(width >= 768) {
+      tileSize = 52;
+    }
+    let fillMode = 1;
+    if(!getTapFillMode) {
+      fillMode = 2;
+    }
     let boardX = boardRef.current?.getBoundingClientRect().x;
     //  console.log('BoardX: ' + boardX);
     let boardY = boardRef.current?.getBoundingClientRect().y;
     //  console.log('BoardY: ' + boardY);
     if(getBeforeTile == 0) {
-      updateArray(Math.floor((e.touches[0].clientY - boardY) / 27), Math.floor((e.touches[0].clientX - boardX) / 27), 1);
+      updateArray(Math.floor((e.touches[0].clientY - boardY) / tileSize), Math.floor((e.touches[0].clientX - boardX) / tileSize), fillMode);
     } else {
-      updateArray(Math.floor((e.touches[0].clientY - boardY) / 27), Math.floor((e.touches[0].clientX - boardX) / 27), 0);
+      updateArray(Math.floor((e.touches[0].clientY - boardY) / tileSize), Math.floor((e.touches[0].clientX - boardX) / tileSize), 0);
     }
   }
 
@@ -84,7 +93,7 @@ function GameBoard(props) {
                 {(() => {
                   let iCellArray = [];
                   for (let i = 0; i < boardSize; i++) {
-                    iCellArray.push(<GameCell key={j + "-" + i} clickState={getClickState} row={j} column={i} getArray={getArray} updateArray={updateArray} getBeforeTile={getBeforeTile} setBeforeTile={setBeforeTile}></GameCell>);
+                    iCellArray.push(<GameCell key={j + "-" + i} clickState={getClickState} row={j} column={i} getArray={getArray} updateArray={updateArray} getBeforeTile={getBeforeTile} setBeforeTile={setBeforeTile} getTapFillMode={getTapFillMode}></GameCell>);
                   }
                   return iCellArray;
                 })()}
@@ -98,6 +107,10 @@ function GameBoard(props) {
         <button onClick={resetAll}>Reset</button>
         <button onClick={checkSolution}>Check</button>
       </div>
+      <label className={styles.switch}>
+        <input type="checkbox" defaultChecked onChange={() => {setTapFillMode(!getTapFillMode)}} />
+        <span className={styles.slider}></span>
+      </label>
     </>
   );
 }
