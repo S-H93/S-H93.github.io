@@ -37,23 +37,37 @@ function GameBoard(props) {
   }
 
 
-  function handleTouchMove(e) {
-    let tileSize = 27;
-    if(width >= 768) {
-      tileSize = 52;
-    }
-    let fillMode = 1;
-    if(!getTapFillMode) {
-      fillMode = 2;
-    }
-    let boardX = boardRef.current?.getBoundingClientRect().x;
-    //  console.log('BoardX: ' + boardX);
-    let boardY = boardRef.current?.getBoundingClientRect().y;
-    //  console.log('BoardY: ' + boardY);
-    if(getBeforeTile == 0) {
-      updateArray(Math.floor((e.touches[0].clientY - boardY) / tileSize), Math.floor((e.touches[0].clientX - boardX) / tileSize), fillMode);
-    } else {
-      updateArray(Math.floor((e.touches[0].clientY - boardY) / tileSize), Math.floor((e.touches[0].clientX - boardX) / tileSize), 0);
+  function handleMouseMove(e) {
+    if(getClickState){
+      let tileSize = 27;
+      if(width >= 768) {
+        tileSize = 52;
+      }
+      console.log
+      let fillMode = getTapFillMode ? 1 : 2;
+      if (getClickState == 2) {
+        fillMode == 1 ? fillMode = 2 : fillMode = 1;
+      }
+      let boardX = boardRef.current?.getBoundingClientRect().x;
+      //  console.log('BoardX: ' + boardX);
+      let boardY = boardRef.current?.getBoundingClientRect().y;
+      //  console.log('BoardY: ' + boardY);
+
+
+      let mouseX, mouseY = 0;
+      if(e.touches){
+        mouseX = e.touches[0].clientX;
+        mouseY = e.touches[0].clientY;
+      } else {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+      }
+
+      if(getBeforeTile == 0) {
+        updateArray(Math.floor((mouseY - boardY) / tileSize), Math.floor((mouseX - boardX) / tileSize), fillMode);
+      } else {
+        updateArray(Math.floor((mouseY - boardY) / tileSize), Math.floor((mouseX - boardX) / tileSize), 0);
+      }
     }
   }
 
@@ -84,7 +98,7 @@ function GameBoard(props) {
 
   return (
     <>
-      <div ref={boardRef} className={styles.gameBoard} onMouseDown={handleMouseDown} onTouchStart={handleMouseDown} onMouseUp={handleMouseUp} onTouchEnd={handleMouseUp} onTouchMove={handleTouchMove}>
+      <div ref={boardRef} className={styles.gameBoard} onMouseDown={handleMouseDown} onTouchStart={handleMouseDown} onMouseUp={handleMouseUp} onTouchEnd={handleMouseUp} onTouchMove={handleMouseMove} onMouseMove={handleMouseMove}>
         {(() => {
           let iRowArray = [];
           for (let j = 0; j < boardSize; j++) {

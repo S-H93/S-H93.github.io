@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styles from "./GameCell.module.scss";
 
 function GameCell(props) {
-  const { clickState, getBeforeTile, setBeforeTile, row, column, getArray, updateArray, getTapFillMode } = props;
+  const { setBeforeTile, row, column, getArray, updateArray, getTapFillMode } = props;
   // 0 = empty
   // 1 = filled
   // 2 = X
@@ -34,30 +34,13 @@ function GameCell(props) {
     }
   }
 
-  function handleEnter(e) {
-    if (clickState == 1) {
-      // clicking on enter
-      if (getBeforeTile == getClass()) {
-        //matching initial clicked tile state
-        getClass() == 0 ? setClass(1) : setClass(0);
-      }
-    } else if (clickState == 2) {
-      // right clicking on enter
-      if (getBeforeTile == getClass()) {
-        //matching initial clicked tile state
-        getClass() == 0 ? setClass(2) : setClass(0);
-      }
-    }
-  }
-
-
   function handleMouseUp(e) {
     e.preventDefault();
     setBeforeTile(undefined);
     setBeingTouched(false);
   }
 
-  return <div className={`${styles.gameCell} ${getClass() == 1 ? styles.filled : getClass() == 2 ? styles.crossed : ""}`} onMouseDown={handleMouseDown} onTouchStart={handleMouseDown} onMouseEnter={handleEnter} onMouseUp={handleMouseUp} onTouchEnd={handleMouseUp} onContextMenu={(e) => e.preventDefault()}></div>;
+  return <div className={`${styles.gameCell} ${getClass() == 1 ? styles.filled : getClass() == 2 ? styles.crossed : ""}`} onMouseDown={handleMouseDown} onTouchStart={handleMouseDown} onMouseUp={handleMouseUp} onTouchEnd={handleMouseUp} onContextMenu={(e) => e.preventDefault()}></div>;
 }
 
 export default GameCell;
