@@ -26,7 +26,7 @@ function Game(props) {
       getNewPuzzle();
     }
     setFirstRun(false);
-  }, [])
+  }, []);
 
   function handleContextMenu(e) {
     e.preventDefault();
@@ -41,7 +41,7 @@ function Game(props) {
     <>
       <div className={styles.gameCnt} onContextMenu={handleContextMenu} onMouseUp={handleMouseUp} onTouchEnd={handleMouseUp}>
         <Hints boardSize={boardSize} columns={columns} rows={rows} />
-        <GameBoard boardSize={boardSize} key={getKey} getClickState={getClickState} setClickState={setClickState} />
+        <GameBoard boardSize={boardSize} key={getKey} getClickState={getClickState} setClickState={setClickState} rows={rows} columns={columns} />
       </div>
     </>
   );
