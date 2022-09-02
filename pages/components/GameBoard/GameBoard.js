@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styles from "./GameBoard.module.scss";
 import GameRow from "../GameRow/GameRow";
 import GameCell from "../GameCell/GameCell";
@@ -6,7 +6,7 @@ import useWindowDimensions from "../Util/useWindowDimensions";
 
 function GameBoard(props) {
   const boardRef = useRef(null);
-  const { boardSize, getClickState, setClickState, solution } = props;
+  const { boardSize, getClickState, setClickState, key} = props;
   const [getBeforeTile, setBeforeTile] = useState(undefined);
   const width = useWindowDimensions()[0];
   // 1 = left click
@@ -14,15 +14,24 @@ function GameBoard(props) {
   const [getTapFillMode, setTapFillMode] = useState(true);
 
   var initialArray = [];
-  for (let j = 0; j < boardSize; j++) {
-    var rowArray = [];
-    for (let i = 0; i < boardSize; i++) {
-      rowArray.push(0);
-    }
-
-    initialArray.push([...rowArray]);
-  }
   const [getArray, setArray] = useState([...initialArray]);
+
+  function renderArray() {
+    var initialArray = [];
+    for (let j = 0; j < boardSize; j++) {
+      var rowArray = [];
+      for (let i = 0; i < boardSize; i++) {
+        rowArray.push(0);
+      }
+  
+      initialArray.push([...rowArray]);
+    }
+    setArray([...initialArray]);
+  }
+
+  useEffect(() => {
+    renderArray();
+  }, [key])
 
   function handleMouseDown(e) {
     if (e.button == 2) {
@@ -89,11 +98,11 @@ function GameBoard(props) {
   }
 
   function checkSolution() {
-    if (getArray.toString().replaceAll(",", "").replaceAll("2", "0") == solution) {
-      alert("Yay!");
-    } else {
-      alert("Nope!");
-    }
+    // if (getArray.toString().replaceAll(",", "").replaceAll("2", "0") == solution) {
+    //   alert("Yay!");
+    // } else {
+    //   alert("Nope!");
+    // }
   }
 
   return (

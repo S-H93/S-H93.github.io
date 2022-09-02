@@ -1,11 +1,12 @@
 .HintRow {
-  width: 52px;
+  width: 102px;
   height: 51px;
   line-height: 52px;
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  margin-right: 16px;
+  margin-right: 66px;
+  white-space: nowrap;
 
   &:nth-child(5n) {
     &:not(:last-child) {
@@ -14,8 +15,9 @@
   }
 
   @media screen and (max-width: 767.9px) {
-    width: 26px;
+    width: 37px;
     height: 26px;
     line-height: 26px;
+    margin-right: 16px;
   }
 }
