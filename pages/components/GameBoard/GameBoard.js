@@ -7,12 +7,14 @@ import useWindowDimensions from "../Util/useWindowDimensions";
 function GameBoard(props) {
   const boardRef = useRef(null);
   const { getClickState, setClickState, key, rowHints, columnHints } = props;
-  const [getBeforeTile, setBeforeTile] = useState(undefined); // remembers the class of the tile the user first clicked/tapped. If the user drags, only tiles with the same initial class with be updated.
+  const [getBeforeTile, setBeforeTile] = useState(undefined); // remembers the class of the tile the user first clicked/tapped. If the user drags, only tiles with the same initial class will be updated.
+  const [getInitialTile, setInitialTile] = useState(undefined); // remember the coordinates of the tile the user first clicked/tapped. If the user drags, only tiles in the same row/column will be updated.
+
   const width = useWindowDimensions()[0]; // get window width
   const [getTapFillMode, setTapFillMode] = useState(true); // true = fill mode is set to fill, false = fill mode is set to "X" (controlled by a toggle at the bottom)
-
-  var initialArray = []; // array of game cells, filled by renderArray function
-  const [getArray, setArray] = useState([...initialArray]);
+  
+  var initialArray = []; 
+  const [getArray, setArray] = useState([...initialArray]); // array of game cells, filled by renderArray function
 
   // create array of cells based on the board size
   function renderArray() {
@@ -90,6 +92,8 @@ function GameBoard(props) {
 
   // when the user clicks/taps on the board, update the clickState to 1 unless they right clicked on PC, then update it to 2
   function handleMouseDown(e) {
+    setInitialTile([...getClickedTile(e)]); // remember the initially clicked tile
+    
     if (e.button == 2) {
       setClickState(2);
     } else {
@@ -100,11 +104,12 @@ function GameBoard(props) {
   // reset the clickState to 0 when the user stops clicking/tapping
   function handleMouseUp(e) {
     setClickState(0);
+    setInitialTile(undefined);
   }
 
   // if the user is clicking/tapping when they move the mouse, update the cells they are dragging over
   function handleMouseMove(e) {
-    if (getClickState) {
+    if (getClickState && getInitialTile) {
       // if clickState is not 0, they're clicking/tapping
       let clickedTile = getClickedTile(e); // get clicked cell
 
@@ -115,7 +120,7 @@ function GameBoard(props) {
       }
 
       // only update if the cell is in the same column or row as the intially clicked cell (no diagonal fills)
-      // if(){
+      if(getInitialTile[0] == clickedTile[0] || getInitialTile[1] == clickedTile[1]){
       if (getBeforeTile == 0) {
         // if the user initially targeted a blank cell, fill or cross out the cell they're tapping based on the fillMode
         updateArray(clickedTile[1], clickedTile[0], fillMode);
@@ -123,7 +128,7 @@ function GameBoard(props) {
         // otherwise, they're resetting the cell to blank, so do that for this cell too
         updateArray(clickedTile[1], clickedTile[0], 0);
       }
-      // }
+      }
     }
   }
 
