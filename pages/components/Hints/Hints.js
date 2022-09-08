@@ -11,21 +11,23 @@ function Hints(props) {
         {/* Generate the HintCol components based on the props passed */}
         {(() => {
           let hintColArray = [];
-          for (let i = 0; i < columnHints.length; i++) {
-            hintColArray.push(
-            <HintCol key={"HintCol-" + i}>
-              {(() => {
-                let hintArray = [];
-                for (let j = 0; j < columnHints[i].length; j++){
-                  if(j == columnHints[i].length - 1){
-                    hintArray.push(columnHints[i][j].toString());
-                  }else{
-                    hintArray.push(columnHints[i][j].toString() + " ");
+          if(columnHints){
+            for (let i = 0; i < columnHints.length; i++) {
+              hintColArray.push(
+              <HintCol key={"HintCol-" + i}>
+                {(() => {
+                  let hintArray = [];
+                  for (let j = 0; j < columnHints[i].length; j++){
+                    if(j == columnHints[i].length - 1){
+                      hintArray.push(columnHints[i][j].toString());
+                    }else{
+                      hintArray.push(columnHints[i][j].toString() + " ");
+                    }
                   }
-                }
-                return hintArray;
-              })()}
-            </HintCol>);
+                  return hintArray;
+                })()}
+              </HintCol>);
+            }
           }
           return hintColArray;
         })()}
@@ -33,24 +35,26 @@ function Hints(props) {
       <div className={styles.HintRows}>
         {/* Generate the HintRow components based on the props passed */}
         {(() => {
-          let rowColArray = [];
-          for (let i = 0; i < rowHints.length; i++) {
-            rowColArray.push(
-            <HintRow key={"HintRow-" + i}>
-              {(() => {
-                let hintArray = [];
-                for (let j = 0; j < rowHints[i].length; j++){
-                  if(j == rowHints[i].length - 1){
-                    hintArray.push(rowHints[i][j].toString());
-                  }else{
-                    hintArray.push(rowHints[i][j].toString() + " ");
+          let hintRowArray = [];
+          if(rowHints){
+            for (let i = 0; i < rowHints.length; i++) {
+              hintRowArray.push(
+              <HintRow key={"HintRow-" + i}>
+                {(() => {
+                  let hintArray = [];
+                  for (let j = 0; j < rowHints[i].length; j++){
+                    if(j == rowHints[i].length - 1){
+                      hintArray.push(rowHints[i][j].toString());
+                    }else{
+                      hintArray.push(rowHints[i][j].toString() + " ");
+                    }
                   }
-                }
-                return hintArray;
-              })()}
-            </HintRow>);
+                  return hintArray;
+                })()}
+              </HintRow>);
+            }
           }
-          return rowColArray;
+          return hintRowArray;
         })()}
       </div>
     </>
