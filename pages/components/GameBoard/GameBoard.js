@@ -53,6 +53,35 @@ function GameBoard(props) {
     setBeforeTile(undefined);
   }
 
+  // Pass in click event, return an array with the x and y cell coordinates of the clicked cell
+  function getClickedTile(e){
+    let tileSize = 27; // SP tile size
+    if(width >= 768) {
+      tileSize = 52; // PC tile size
+    }
+    
+    let boardX = boardRef.current?.getBoundingClientRect().x; // get the X coordinate of the game board
+    //  console.log('BoardX: ' + boardX);
+    let boardY = boardRef.current?.getBoundingClientRect().y; // get the Y coordinate of the game board
+    //  console.log('BoardY: ' + boardY);
+
+    let mouseX, mouseY = 0;
+
+    // get the X and Y coordinates (pixels) of the click/tap
+    if(e.touches){
+      mouseX = e.touches[0].clientX;
+      mouseY = e.touches[0].clientY;
+    } else {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    }
+
+    // get the x and y cell coordinates based on where the click is on the board
+    let yTile = Math.floor((mouseY - boardY) / tileSize);
+    let xTile = Math.floor((mouseX - boardX) / tileSize);
+
+    return [xTile, yTile];
+  }
 
   // when the user clicks/taps on the board, update the clickState to 1 unless they right clicked on PC, then update it to 2  
   function handleMouseDown(e) {
@@ -71,41 +100,19 @@ function GameBoard(props) {
   // if the user is clicking/tapping when they move the mouse, update the cells they are dragging over
   function handleMouseMove(e) {
     if(getClickState){ // if clickState is not 0, they're clicking/tapping
-      let tileSize = 27; // SP tile size
-      if(width >= 768) {
-        tileSize = 52; // PC tile size
-      }
+      let clickedTile = getClickedTile(e) // get clicked cell
+      
       let fillMode = getTapFillMode ? 1 : 2; // fillMode; 1 if the slider is set to fill, otherwise 2 (Xs)
       if (getClickState == 2) { // if the user is right clicking on PC, do the opposite
         fillMode == 1 ? fillMode = 2 : fillMode = 1;
       }
-      let boardX = boardRef.current?.getBoundingClientRect().x; // get the X coordinate of the game board
-      //  console.log('BoardX: ' + boardX);
-      let boardY = boardRef.current?.getBoundingClientRect().y; // get the Y coordinate of the game board
-      //  console.log('BoardY: ' + boardY);
 
-
-      let mouseX, mouseY = 0;
-
-      // get the X and Y coordinates (pixels) of the click/tap
-      if(e.touches){
-        mouseX = e.touches[0].clientX;
-        mouseY = e.touches[0].clientY;
-      } else {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-      }
-
-      // get the x and y cell coordinates based on where the click is on the board
-      let yTile = Math.floor((mouseY - boardY) / tileSize);
-      let xTile = Math.floor((mouseX - boardX) / tileSize);
-
-      // TODO: only update if the cell is in the same column/row as the intially clicked cell
+      // only update if the cell is in the same column or row as the intially clicked cell (no diagonal fills)
       // if(){
         if(getBeforeTile == 0) { // if the user initially targeted a blank cell, fill or cross out the cell they're tapping based on the fillMode
-          updateArray(yTile, xTile, fillMode);
+          updateArray(clickedTile[1], clickedTile[0], fillMode);
         } else { // otherwise, they're resetting the cell to blank, so do that for this cell too
-          updateArray(yTile, xTile, 0);
+          updateArray(clickedTile[1], clickedTile[0], 0);
         }
       // }
         
