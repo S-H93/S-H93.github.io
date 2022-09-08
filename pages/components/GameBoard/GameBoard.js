@@ -6,7 +6,7 @@ import useWindowDimensions from "../Util/useWindowDimensions";
 
 function GameBoard(props) {
   const boardRef = useRef(null);
-  const { getPuzzleNum, getNewPuzzle, getClickState, setClickState, rowHints, columnHints } = props;
+  const { getPuzzleNum, getNewPuzzle, getClickState, setClickState, rowHints, columnHints, setPuzzleSolved, isPuzzleSolved } = props;
   const [getBeforeTile, setBeforeTile] = useState(undefined); // remembers the class of the tile the user first clicked/tapped. If the user drags, only tiles with the same initial class will be updated.
   const [getInitialTile, setInitialTile] = useState(undefined); // remember the coordinates of the tile the user first clicked/tapped. If the user drags, only tiles in the same row/column will be updated.
 
@@ -49,6 +49,7 @@ function GameBoard(props) {
 
   // reset the whole array to blanks (0)
   function resetAll() {
+    setPuzzleSolved(false);
     if (rowHints && columnHints) {
       for (let j = 0; j < rowHints.length; j++) {
         for (let i = 0; i < columnHints.length; i++) {
@@ -134,6 +135,7 @@ function GameBoard(props) {
 
   // check if the current board is a valid solution based on the hints
   function checkSolution() {
+    setPuzzleSolved(false);
     if (!rowHints || !columnHints) {
       return;
     }
@@ -202,7 +204,8 @@ function GameBoard(props) {
         return; // stop checking
       }
     }
-    alert("Yay!"); // TODO: have an actual winning message
+    alert("Puzzle solved!");
+    setPuzzleSolved(true);
   }
 
   return (
@@ -229,7 +232,7 @@ function GameBoard(props) {
           return iRowArray;
         })()}
       </div>
-      <h2 className={styles.puzzleNum}>#{getPuzzleNum}</h2>
+      <h2 className={`${styles.puzzleNum} ${isPuzzleSolved ? styles.solved : ''}`}>#{getPuzzleNum}</h2>
       <div className={styles.buttons}>
         <button onClick={() => {getNewPuzzle()}}>New Puzzle</button>
         <button onClick={resetAll}>Reset</button>

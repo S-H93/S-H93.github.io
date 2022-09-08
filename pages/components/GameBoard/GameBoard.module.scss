@@ -9,6 +9,16 @@
 .puzzleNum {
   margin-top: 0;
   font-size: 24px;
+  position: relative;
+}
+
+.solved {
+  &::after {
+    content: "✔️";
+    position: absolute;
+    right: -40px;
+    top: -3px;
+  }
 }
 
 .buttons {
