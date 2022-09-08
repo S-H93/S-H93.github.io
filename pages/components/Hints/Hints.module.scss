@@ -9,7 +9,6 @@
   right: 0;
   text-align: center;
   pointer-events: none;
-  font-family: Arial, Helvetica, sans-serif;
   font-size: 16px;
 
   @media screen and (max-width: 767.9px) {
@@ -32,12 +31,10 @@
   pointer-events: none;
   font-size: 16px;
   word-spacing: 3px;
-  font-family: Arial, Helvetica, sans-serif;
 
   @media screen and (max-width: 767.9px) {
     margin-left: -310px;
     font-size: 10px;
     width: 26px;
-    top: 11px;
   }
 }

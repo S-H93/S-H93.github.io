@@ -6,7 +6,7 @@ import puzzles from "../../data/puzzles10.json" // JSON containing all the puzzl
 
 function Game(props) {
   const keys = Object.keys(puzzles); // keys of all the puzzles in the JSON file
-  const [getKey, setKey] = useState(-1); // key of the current puzzle (-1 initially)
+  const [getPuzzleNum, setPuzzleNum] = useState(-1); // key of the current puzzle (-1 initially)
   const [isFirstRun, setFirstRun] = useState(true); // on the first run, generates an empty 0x0 puzzle board, but is refreshed with a real puzzle after initialization
   const [getClickState, setClickState] = useState(0); // keep track of if the user is clicking or not; 0 is not clicking, 1 is clicking, 2 is right clicking
 
@@ -16,10 +16,10 @@ function Game(props) {
 
   // Generate a new puzzle based on the parameter if passed or random if otherwise
   function getNewPuzzle(num) {
-    let key = num || Math.floor(Math.random() * keys.length); //choose a random key if no parameter
-    setKey(key); //update key
-    setColumnHints([...puzzles[key]["column"]]); //update hints
-    setRowHints([...puzzles[key]["row"]]); //update rows
+    let puzzleNum = num || Math.floor(Math.random() * keys.length); //choose a random puzzle if no parameter
+    setPuzzleNum(puzzleNum); //update puzzle
+    setColumnHints([...puzzles[puzzleNum]["column"]]); //update hints
+    setRowHints([...puzzles[puzzleNum]["row"]]); //update rows
   }
 
   //on initialization, generate a new random puzzle
@@ -45,7 +45,7 @@ function Game(props) {
     <>
       <div className={styles.gameCnt} onContextMenu={handleContextMenu} onMouseUp={handleMouseUp} onTouchEnd={handleMouseUp}>
         <Hints rowHints={rowHints} columnHints={columnHints} />
-        <GameBoard key={getKey} getClickState={getClickState} setClickState={setClickState} rowHints={rowHints} columnHints={columnHints} />
+        <GameBoard getPuzzleNum={getPuzzleNum} getNewPuzzle={getNewPuzzle} getClickState={getClickState} setClickState={setClickState} rowHints={rowHints} columnHints={columnHints} />
       </div>
     </>
   );

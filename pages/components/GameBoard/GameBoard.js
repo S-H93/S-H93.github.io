@@ -6,7 +6,7 @@ import useWindowDimensions from "../Util/useWindowDimensions";
 
 function GameBoard(props) {
   const boardRef = useRef(null);
-  const { getClickState, setClickState, key, rowHints, columnHints } = props;
+  const { getPuzzleNum, getNewPuzzle, getClickState, setClickState, rowHints, columnHints } = props;
   const [getBeforeTile, setBeforeTile] = useState(undefined); // remembers the class of the tile the user first clicked/tapped. If the user drags, only tiles with the same initial class will be updated.
   const [getInitialTile, setInitialTile] = useState(undefined); // remember the coordinates of the tile the user first clicked/tapped. If the user drags, only tiles in the same row/column will be updated.
 
@@ -31,10 +31,10 @@ function GameBoard(props) {
     setArray([...temp_array]);
   }
 
-  // if the "key" (puzzle number) changes, rerender the array
+  // if the puzzle number changes, rerender the array
   useEffect(() => {
     renderArray();
-  }, [key]);
+  }, [getPuzzleNum]);
 
   // function to update the array
   // newValue: 0 is blank, 1 is filled, 2 is crossed out
@@ -229,7 +229,9 @@ function GameBoard(props) {
           return iRowArray;
         })()}
       </div>
+      <h2 className={styles.puzzleNum}>#{getPuzzleNum}</h2>
       <div className={styles.buttons}>
+        <button onClick={() => {getNewPuzzle()}}>New Puzzle</button>
         <button onClick={resetAll}>Reset</button>
         <button onClick={checkSolution}>Check</button>
       </div>
