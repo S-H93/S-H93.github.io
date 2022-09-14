@@ -7,19 +7,21 @@ import useWindowDimensions from "../Util/useWindowDimensions";
 function GameBoard(props) {
   const boardRef = useRef(null);
   const { getPuzzleNum, getNewPuzzle, getClickState, setClickState, rowHints, columnHints, setPuzzleSolved, isPuzzleSolved } = props;
-  const [getBeforeTile, setBeforeTile] = useState(undefined); // remembers the class of the tile the user first clicked/tapped. If the user drags, only tiles with the same initial class will be updated.
+  const [getBeforeTile, setBeforeTile] = useState(undefined); // remember the class of the tile the user first clicked/tapped. If the user drags, only tiles with the same initial class will be updated.
   const [getInitialTile, setInitialTile] = useState(undefined); // remember the coordinates of the tile the user first clicked/tapped. If the user drags, only tiles in the same row/column will be updated.
 
   const width = useWindowDimensions()[0]; // get window width
   const [getTapFillMode, setTapFillMode] = useState(true); // true = fill mode is set to fill, false = fill mode is set to "X" (controlled by a toggle at the bottom)
   
-  var initialArray = []; 
-  const [getArray, setArray] = useState([...initialArray]); // array of game cells, filled by renderArray function
-
+  const [getArray, setArray] = useState([]); // array of game cells, filled by renderArray function
+  const [isHistoryEnabled, setHistoryEnabled] = useState(false); // set true when the game board is generated
+  const [getHistory, setHistory] = useState([]); // remember the history of the game, allowing for undos
+  
   // create array of cells based on the board size
   function renderArray() {
     let temp_array = [];
     if (rowHints && columnHints) {
+      setHistoryEnabled(true);
       for (let j = 0; j < rowHints.length; j++) {
         let rowArray = []; // each entry in the array is another array representing a row
         for (let i = 0; i < columnHints.length; i++) {
@@ -28,7 +30,8 @@ function GameBoard(props) {
         temp_array.push([...rowArray]);
       }
     }
-    setArray([...temp_array]);
+    setArray(temp_array.map(e => [...e]));
+    updateHistory();
   }
 
   // if the puzzle number changes, rerender the array
@@ -39,11 +42,11 @@ function GameBoard(props) {
   // function to update the array
   // newValue: 0 is blank, 1 is filled, 2 is crossed out
   function updateArray(row, column, newValue) {
-    let temp_array = getArray;
+    let temp_array = getArray.map(e => [...e]);
     // sanity check to make sure the row and column are within the board size
     if (rowHints && columnHints && row < rowHints.length && column < columnHints.length && row > -1 && column > -1) {
       temp_array[row][column] = newValue;
-      setArray([...temp_array]);
+      setArray(temp_array.map(e => [...e]));
     }
   }
 
@@ -93,6 +96,7 @@ function GameBoard(props) {
 
   // when the user clicks/taps on the board, update the clickState to 1 unless they right clicked on PC, then update it to 2
   function handleMouseDown(e) {
+    updateHistory();
     setInitialTile([...getClickedTile(e)]); // remember the initially clicked tile
     
     if (e.button == 2) {
@@ -208,6 +212,24 @@ function GameBoard(props) {
     setPuzzleSolved(true);
   }
 
+  //push the state of the board to the history array
+  function updateHistory() {
+    if(isHistoryEnabled){
+      let history = getHistory.map(e => [...e]); //clone history array
+      history.push(getArray.map(e => [...e])); // push current state of the board to the clone
+      setHistory(history.map(e => [...e])); //set the history to this new clone
+    }
+  }
+
+  //set board to the latest element in the history array, then remove that from the history array
+  function undo() {
+    if(getHistory.length > 1){ // first element is an empty array, so make sure there are at least 2 elements
+      let newArray = getHistory.slice(-1)[0];
+      setArray(newArray.map(e => [...e]));
+      getHistory.pop();
+    }
+  }
+
   return (
     <>
       <div ref={boardRef} className={styles.gameBoard} onMouseDown={handleMouseDown} onTouchStart={handleMouseDown} onMouseUp={handleMouseUp} onTouchEnd={handleMouseUp} onTouchMove={handleMouseMove} onMouseMove={handleMouseMove}>
@@ -234,21 +256,24 @@ function GameBoard(props) {
       </div>
       <h2 className={`${styles.puzzleNum} ${isPuzzleSolved ? styles.solved : ''}`}>#{getPuzzleNum}</h2>
       <div className={styles.buttons}>
+        {/* toggle to change the fill mode from filling cells to crossing them out */}
+        <button onClick={undo} className={styles.undo}>Undo</button>
+        <label className={styles.switch}>
+          <input
+            type="checkbox"
+            defaultChecked
+            onChange={() => {
+              setTapFillMode(!getTapFillMode);
+            }}
+          />
+          <span className={styles.slider}></span>
+        </label>
+      </div>
+      <div className={styles.buttons}>
         <button onClick={() => {getNewPuzzle()}}>New Puzzle</button>
         <button onClick={resetAll}>Reset</button>
         <button onClick={checkSolution}>Check</button>
       </div>
-      {/* toggle to change the fill mode from filling cells to crossing them out */}
-      <label className={styles.switch}>
-        <input
-          type="checkbox"
-          defaultChecked
-          onChange={() => {
-            setTapFillMode(!getTapFillMode);
-          }}
-        />
-        <span className={styles.slider}></span>
-      </label>
     </>
   );
 }
