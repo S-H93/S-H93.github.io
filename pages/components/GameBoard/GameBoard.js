@@ -3,6 +3,7 @@ import styles from "./GameBoard.module.scss";
 import GameRow from "../GameRow/GameRow";
 import GameCell from "../GameCell/GameCell";
 import useWindowDimensions from "../Util/useWindowDimensions";
+import { render } from "react-dom";
 
 function GameBoard(props) {
   const boardRef = useRef(null);
@@ -53,14 +54,7 @@ function GameBoard(props) {
   // reset the whole array to blanks (0)
   function resetAll() {
     setPuzzleSolved(false);
-    if (rowHints && columnHints) {
-      for (let j = 0; j < rowHints.length; j++) {
-        for (let i = 0; i < columnHints.length; i++) {
-          updateArray(j, i, 0);
-        }
-      }
-    }
-    setBeforeTile(undefined);
+    renderArray();
   }
 
   // Pass in click event, return an array with the x and y cell coordinates of the clicked cell
