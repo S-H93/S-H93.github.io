@@ -3,7 +3,7 @@ import HintRow from "../HintRow/HintRow";
 import styles from "./Hints.module.scss";
 
 function Hints(props) {
-  const { columnHints, rowHints } = props;
+  const { columnHints, rowHints, rowHintsStatus, columnHintsStatus } = props;
 
   return (
     <>
@@ -14,7 +14,7 @@ function Hints(props) {
           if(columnHints){
             for (let i = 0; i < columnHints.length; i++) {
               hintColArray.push(
-              <HintCol key={"HintCol-" + i}>
+              <HintCol key={"HintCol-" + i} num={i} columnHintsStatus={columnHintsStatus}>
                 {(() => {
                   let hintArray = [];
                   for (let j = 0; j < columnHints[i].length; j++){
@@ -39,7 +39,7 @@ function Hints(props) {
           if(rowHints){
             for (let i = 0; i < rowHints.length; i++) {
               hintRowArray.push(
-              <HintRow key={"HintRow-" + i}>
+              <HintRow key={"HintRow-" + i} num={i} rowHintsStatus={rowHintsStatus}>
                 {(() => {
                   let hintArray = [];
                   for (let j = 0; j < rowHints[i].length; j++){

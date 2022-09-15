@@ -3,11 +3,10 @@ import styles from "./GameBoard.module.scss";
 import GameRow from "../GameRow/GameRow";
 import GameCell from "../GameCell/GameCell";
 import useWindowDimensions from "../Util/useWindowDimensions";
-import { render } from "react-dom";
 
 function GameBoard(props) {
   const boardRef = useRef(null);
-  const { getPuzzleNum, getNewPuzzle, getClickState, setClickState, rowHints, columnHints, setPuzzleSolved, isPuzzleSolved } = props;
+  const { getPuzzleNum, getNewPuzzle, getClickState, setClickState, rowHints, columnHints, setPuzzleSolved, isPuzzleSolved, rowHintsStatus, columnHintsStatus, setRowHintsStatus, setColumnHintsStatus } = props;
   const [getBeforeTile, setBeforeTile] = useState(undefined); // remember the class of the tile the user first clicked/tapped. If the user drags, only tiles with the same initial class will be updated.
   const [getInitialTile, setInitialTile] = useState(undefined); // remember the coordinates of the tile the user first clicked/tapped. If the user drags, only tiles in the same row/column will be updated.
 
@@ -140,6 +139,8 @@ function GameBoard(props) {
       return;
     }
 
+    let errorFound = false; //assume puzzle is solved until a single error is found;
+
     // check each row comparing it to the hint provided
     for (let i = 0; i < rowHints.length; i++) {
       let row = getArray[i];
@@ -165,9 +166,14 @@ function GameBoard(props) {
       testString = testString.substring(0, testString.length - 1); // delete final comma
 
       if (rowHints[i] != testString) {
-        // compare the string to the hint; if it's the same, then the row is okay
-        alert(rowHints[i] + " and " + testString); //TODO: update the row class to show which row is incorrect
-        return; // stop checking
+        let temp_array = rowHintsStatus;
+        temp_array[i] = false;
+        errorFound = true;
+        setRowHintsStatus([...temp_array]);
+      } else {
+        let temp_array = rowHintsStatus;
+        temp_array[i] = true;
+        setRowHintsStatus([...temp_array]);
       }
     }
 
@@ -199,13 +205,21 @@ function GameBoard(props) {
       testString = testString.substring(0, testString.length - 1); // delete final comma
 
       if (columnHints[i] != testString) {
-        // compare the string to the hint; if it's the same, then the column is okay
-        alert(columnHints[i] + " and " + testString); //TODO: update the row class to show which row is incorrect
-        return; // stop checking
+        let temp_array = columnHintsStatus;
+        temp_array[i] = false;
+        errorFound = true;
+        setColumnHintsStatus([...temp_array]);
+      } else {
+        let temp_array = columnHintsStatus;
+        temp_array[i] = true;
+        setColumnHintsStatus([...temp_array]);
       }
     }
-    alert("Puzzle solved!");
-    setPuzzleSolved(true);
+    if (!errorFound) {
+      // if still no errors
+      alert("Puzzle solved!");
+      setPuzzleSolved(true);
+    }
   }
 
   //push the state of the board to the history array
