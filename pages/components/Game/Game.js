@@ -1,8 +1,8 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import Hints from "../Hints/Hints.js";
 import GameBoard from "../GameBoard/GameBoard.js";
 import styles from "./Game.module.scss";
-import puzzles from "../../data/puzzles10.json" // JSON containing all the puzzles
+import puzzles from "../../data/puzzles10.json"; // JSON containing all the puzzles
 
 function Game(props) {
   const keys = Object.keys(puzzles); // keys of all the puzzles in the JSON file
@@ -16,18 +16,20 @@ function Game(props) {
   const [columnHints, setColumnHints] = useState([...initialArray]); // array representing the hints for each column from the JSON puzzle file; empty initially
 
   // Generate a new puzzle based on the parameter if passed or random if otherwise
-  function getNewPuzzle(num) {
-    let puzzleNum = num || Math.floor(Math.random() * keys.length); //choose a random puzzle if no parameter
-    setPuzzleNum(puzzleNum); //update puzzle
-    setColumnHints([...puzzles[puzzleNum]["column"]]); //update hints
-    setRowHints([...puzzles[puzzleNum]["row"]]); //update rows
-    setPuzzleSolved(false); // set puzzle to be unsolved if solved
+  function getNewPuzzle(isFirstRun, num) {
+    if (isFirstRun || isPuzzleSolved || confirm("Abandon the current puzzle?") == true) { //Don't show popup when generating the first puzzle or if the puzzle is solved
+      let puzzleNum = num || Math.floor(Math.random() * keys.length); //choose a random puzzle if no parameter
+      setPuzzleNum(puzzleNum); //update puzzle
+      setColumnHints([...puzzles[puzzleNum]["column"]]); //update hints
+      setRowHints([...puzzles[puzzleNum]["row"]]); //update rows
+      setPuzzleSolved(false); // set puzzle to be unsolved if solved
+    }
   }
 
   //on initialization, generate a new random puzzle
   useEffect(() => {
-    if(isFirstRun){
-      getNewPuzzle();
+    if (isFirstRun) {
+      getNewPuzzle(true);
     }
     setFirstRun(false);
   }, []);

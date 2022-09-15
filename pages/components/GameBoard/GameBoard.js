@@ -13,11 +13,11 @@ function GameBoard(props) {
 
   const width = useWindowDimensions()[0]; // get window width
   const [getTapFillMode, setTapFillMode] = useState(true); // true = fill mode is set to fill, false = fill mode is set to "X" (controlled by a toggle at the bottom)
-  
+
   const [getArray, setArray] = useState([]); // array of game cells, filled by renderArray function
   const [isHistoryEnabled, setHistoryEnabled] = useState(false); // set true when the game board is generated
   const [getHistory, setHistory] = useState([]); // remember the history of the game, allowing for undos
-  
+
   // create array of cells based on the board size
   function renderArray() {
     let temp_array = [];
@@ -31,8 +31,8 @@ function GameBoard(props) {
         temp_array.push([...rowArray]);
       }
     }
-    setArray(temp_array.map(e => [...e]));
-    updateHistory();
+    setArray(temp_array.map((e) => [...e]));
+    setHistory([]);
   }
 
   // if the puzzle number changes, rerender the array
@@ -43,18 +43,20 @@ function GameBoard(props) {
   // function to update the array
   // newValue: 0 is blank, 1 is filled, 2 is crossed out
   function updateArray(row, column, newValue) {
-    let temp_array = getArray.map(e => [...e]);
+    let temp_array = getArray.map((e) => [...e]);
     // sanity check to make sure the row and column are within the board size
     if (rowHints && columnHints && row < rowHints.length && column < columnHints.length && row > -1 && column > -1) {
       temp_array[row][column] = newValue;
-      setArray(temp_array.map(e => [...e]));
+      setArray(temp_array.map((e) => [...e]));
     }
   }
 
   // reset the whole array to blanks (0)
   function resetAll() {
-    setPuzzleSolved(false);
-    renderArray();
+    if (confirm("Reset the puzzle?") == true) {
+      setPuzzleSolved(false);
+      renderArray();
+    }
   }
 
   // Pass in click event, return an array with the x and y cell coordinates of the clicked cell
@@ -92,7 +94,7 @@ function GameBoard(props) {
   function handleMouseDown(e) {
     updateHistory();
     setInitialTile([...getClickedTile(e)]); // remember the initially clicked tile
-    
+
     if (e.button == 2) {
       setClickState(2);
     } else {
@@ -119,14 +121,14 @@ function GameBoard(props) {
       }
 
       // only update if the cell is in the same column or row as the intially clicked cell (no diagonal fills)
-      if(getInitialTile[0] == clickedTile[0] || getInitialTile[1] == clickedTile[1]){
-      if (getBeforeTile == 0) {
-        // if the user initially targeted a blank cell, fill or cross out the cell they're tapping based on the fillMode
-        updateArray(clickedTile[1], clickedTile[0], fillMode);
-      } else {
-        // otherwise, they're resetting the cell to blank, so do that for this cell too
-        updateArray(clickedTile[1], clickedTile[0], 0);
-      }
+      if (getInitialTile[0] == clickedTile[0] || getInitialTile[1] == clickedTile[1]) {
+        if (getBeforeTile == 0) {
+          // if the user initially targeted a blank cell, fill or cross out the cell they're tapping based on the fillMode
+          updateArray(clickedTile[1], clickedTile[0], fillMode);
+        } else {
+          // otherwise, they're resetting the cell to blank, so do that for this cell too
+          updateArray(clickedTile[1], clickedTile[0], 0);
+        }
       }
     }
   }
@@ -208,18 +210,19 @@ function GameBoard(props) {
 
   //push the state of the board to the history array
   function updateHistory() {
-    if(isHistoryEnabled){
-      let history = getHistory.map(e => [...e]); //clone history array
-      history.push(getArray.map(e => [...e])); // push current state of the board to the clone
-      setHistory(history.map(e => [...e])); //set the history to this new clone
+    if (isHistoryEnabled) {
+      let history = getHistory.map((e) => [...e]); //clone history array
+      history.push(getArray.map((e) => [...e])); // push current state of the board to the clone
+      setHistory(history.map((e) => [...e])); //set the history to this new clone
     }
   }
 
   //set board to the latest element in the history array, then remove that from the history array
   function undo() {
-    if(getHistory.length > 1){ // first element is an empty array, so make sure there are at least 2 elements
+    if (getHistory.length > 0) {
+      // Make sure there is at least one element in the history array
       let newArray = getHistory.slice(-1)[0];
-      setArray(newArray.map(e => [...e]));
+      setArray(newArray.map((e) => [...e]));
       getHistory.pop();
     }
   }
@@ -230,7 +233,7 @@ function GameBoard(props) {
         {/* push GameRow and GameCell components based on the number of rows/columns */}
         {(() => {
           let iRowArray = [];
-          if(rowHints && columnHints) {
+          if (rowHints && columnHints) {
             for (let j = 0; j < rowHints.length; j++) {
               iRowArray.push(
                 <GameRow className={styles.gameRow} key={j}>
@@ -248,10 +251,12 @@ function GameBoard(props) {
           return iRowArray;
         })()}
       </div>
-      <h2 className={`${styles.puzzleNum} ${isPuzzleSolved ? styles.solved : ''}`}>#{getPuzzleNum}</h2>
+      <h2 className={`${styles.puzzleNum} ${isPuzzleSolved ? styles.solved : ""}`}>#{getPuzzleNum}</h2>
       <div className={styles.buttons}>
         {/* toggle to change the fill mode from filling cells to crossing them out */}
-        <button onClick={undo} className={styles.undo}>Undo</button>
+        <button onClick={undo} className={styles.undo}>
+          Undo
+        </button>
         <label className={styles.switch}>
           <input
             type="checkbox"
@@ -264,7 +269,13 @@ function GameBoard(props) {
         </label>
       </div>
       <div className={styles.buttons}>
-        <button onClick={() => {getNewPuzzle()}}>New Puzzle</button>
+        <button
+          onClick={() => {
+            getNewPuzzle();
+          }}
+        >
+          New Puzzle
+        </button>
         <button onClick={resetAll}>Reset</button>
         <button onClick={checkSolution}>Check</button>
       </div>
