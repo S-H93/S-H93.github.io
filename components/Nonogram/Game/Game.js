@@ -15,10 +15,13 @@ function Game(props) {
   const [rowHintsStatus, setRowHintsStatus] = useState([]); // array containing boolean values, changes to "false" if the row does not match the hint provided when the user checks their answer
   const [columnHintsStatus, setColumnHintsStatus] = useState([]); // array containing boolean values, changes to "false" if the column does not match the hint provided when the user checks their answer
   
-  // Generate a new puzzle based on the parameter if passed or random if otherwise
-  function getNewPuzzle(isFirstRun, num) {
+  // Generate a new puzzle
+  function getNewPuzzle(isFirstRun) {
     if (isFirstRun || isPuzzleSolved || confirm("Abandon the current puzzle?") == true) { //Don't show popup when generating the first puzzle or if the puzzle is solved
-      let puzzleNum = num || Math.floor(Math.random() * keys.length); //choose a random puzzle if no parameter
+      let puzzleNum = getPuzzleNum;
+      while(puzzleNum == getPuzzleNum) {
+        puzzleNum = Math.floor(Math.random() * keys.length); //choose a random puzzle, if it randomly chooses the current puzzle then randomize until it's not
+      }
       setPuzzleNum(puzzleNum); //update puzzle
       setColumnHints([...puzzles[puzzleNum]["column"]]); //update hints
       setRowHints([...puzzles[puzzleNum]["row"]]); //update rows
