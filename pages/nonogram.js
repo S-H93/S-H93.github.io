@@ -1,4 +1,4 @@
-import Game from "./components/Nonogram/Game/Game.js";
+import Game from "../components/Nonogram/Game/Game.js";
 
 const Nonogram = () => {
   return (
