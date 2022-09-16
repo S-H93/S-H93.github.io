@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Hints from "../Hints/Hints.js";
 import GameBoard from "../GameBoard/GameBoard.js";
 import styles from "./Game.module.scss";
-import puzzles from "../../data/puzzles10.json"; // JSON containing all the puzzles
+import puzzles from "../data/puzzles10.json"; // JSON containing all the puzzles
 
 function Game(props) {
   const keys = Object.keys(puzzles); // keys of all the puzzles in the JSON file
