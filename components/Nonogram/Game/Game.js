@@ -6,7 +6,7 @@ import puzzles from "../data/puzzles10.json"; // JSON containing all the puzzles
 
 function Game(props) {
   const keys = Object.keys(puzzles); // keys of all the puzzles in the JSON file
-  const [getPuzzleNum, setPuzzleNum] = useState(-1); // key of the current puzzle (-1 initially)
+  const [getPuzzleNum, setPuzzleNum] = useState(''); // key of the current puzzle (-1 initially)
   const [getClickState, setClickState] = useState(0); // keep track of if the user is clicking or not; 0 is not clicking, 1 is clicking, 2 is right clicking
   const [isPuzzleSolved, setPuzzleSolved] = useState(false); // update if current puzzle is solved
   const [rowHints, setRowHints] = useState([]); // array representing the hints for each row from the JSON puzzle file; empty initially
@@ -20,7 +20,7 @@ function Game(props) {
     if (isFirstRun || isPuzzleSolved || confirm("Abandon the current puzzle?") == true) { //Don't show popup when generating the first puzzle or if the puzzle is solved
       let puzzleNum = getPuzzleNum;
       while(puzzleNum == getPuzzleNum) {
-        puzzleNum = Math.floor(Math.random() * keys.length); //choose a random puzzle, if it randomly chooses the current puzzle then randomize until it's not
+        puzzleNum = keys[Math.floor(Math.random() * keys.length)]; //choose a random puzzle, if it randomly chooses the current puzzle then randomize until it's not
       }
       setPuzzleNum(puzzleNum); //update puzzle
       setColumnHints([...puzzles[puzzleNum]["column"]]); //update hints
