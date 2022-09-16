@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styles from "./GameCell.module.scss";
 
 function GameCell(props) {
-  const { setBeforeTile, row, column, getArray, updateArray, getTapFillMode } = props;
+  const { setBeforeTile, row, column, getArray, updateArray, getTapFillMode, isPuzzleSolved } = props;
 
   // Possible cell classes:
   // 0 = empty
@@ -29,13 +29,15 @@ function GameCell(props) {
     if (e._reactName != "onTouchStart") {
       e.preventDefault();
     }
-    setBeforeTile(getClass()); // remember the initial class of the clicked tile
-    if (e.button == 2 || !getTapFillMode) {
-      // if right click OR tapFillMode is set to X
-      getClass() == 0 ? setClass(2) : setClass(0); // change to X if empty, or empty if X
-    } else {
-      // if left click OR tapFillMode is set to fill
-      getClass() == 0 ? setClass(1) : setClass(0); // change to filled if empty, or empty if filled
+    if (!isPuzzleSolved) {
+      setBeforeTile(getClass()); // remember the initial class of the clicked tile
+      if (e.button == 2 || !getTapFillMode) {
+        // if right click OR tapFillMode is set to X
+        getClass() == 0 ? setClass(2) : setClass(0); // change to X if empty, or empty if X
+      } else {
+        // if left click OR tapFillMode is set to fill
+        getClass() == 0 ? setClass(1) : setClass(0); // change to filled if empty, or empty if filled
+      }
     }
   }
 

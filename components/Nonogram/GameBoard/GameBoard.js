@@ -91,13 +91,15 @@ function GameBoard(props) {
 
   // when the user clicks/taps on the board, update the clickState to 1 unless they right clicked on PC, then update it to 2
   function handleMouseDown(e) {
-    updateHistory();
-    setInitialTile([...getClickedTile(e)]); // remember the initially clicked tile
+    if (!isPuzzleSolved) {
+      updateHistory();
+      setInitialTile([...getClickedTile(e)]); // remember the initially clicked tile
 
-    if (e.button == 2) {
-      setClickState(2);
-    } else {
-      setClickState(1);
+      if (e.button == 2) {
+        setClickState(2);
+      } else {
+        setClickState(1);
+      }
     }
   }
 
@@ -236,14 +238,15 @@ function GameBoard(props) {
     if (getHistory.length > 0) {
       // Make sure there is at least one element in the history array
       let newArray = getHistory.slice(-1)[0];
-      setArray(newArray.map((e) => [...e]));
-      getHistory.pop();
+      setArray(newArray.map((e) => [...e])); // Set the puzzle to the last item in the history array
+      getHistory.pop(); // Remove the last item 
+      setPuzzleSolved(false);
     }
   }
 
   return (
     <>
-      <div ref={boardRef} className={styles.gameBoard} onMouseDown={handleMouseDown} onTouchStart={handleMouseDown} onMouseUp={handleMouseUp} onTouchEnd={handleMouseUp} onTouchMove={handleMouseMove} onMouseMove={handleMouseMove}>
+      <div ref={boardRef} className={`${styles.gameBoard} ${isPuzzleSolved ? styles.solvedBoard : ""}`} onMouseDown={handleMouseDown} onTouchStart={handleMouseDown} onMouseUp={handleMouseUp} onTouchEnd={handleMouseUp} onTouchMove={handleMouseMove} onMouseMove={handleMouseMove}>
         {/* push GameRow and GameCell components based on the number of rows/columns */}
         {(() => {
           let iRowArray = [];
@@ -254,7 +257,7 @@ function GameBoard(props) {
                   {(() => {
                     let iCellArray = [];
                     for (let i = 0; i < columnHints.length; i++) {
-                      iCellArray.push(<GameCell key={j + "-" + i} clickState={getClickState} row={j} column={i} getArray={getArray} updateArray={updateArray} getBeforeTile={getBeforeTile} setBeforeTile={setBeforeTile} getTapFillMode={getTapFillMode}></GameCell>);
+                      iCellArray.push(<GameCell key={j + "-" + i} clickState={getClickState} row={j} column={i} getArray={getArray} updateArray={updateArray} getBeforeTile={getBeforeTile} setBeforeTile={setBeforeTile} getTapFillMode={getTapFillMode} isPuzzleSolved={isPuzzleSolved}></GameCell>);
                     }
                     return iCellArray;
                   })()}
@@ -265,7 +268,7 @@ function GameBoard(props) {
           return iRowArray;
         })()}
       </div>
-      <h2 className={`${styles.puzzleNum} ${isPuzzleSolved ? styles.solved : ""}`}>#{getPuzzleNum}</h2>
+      <h2 className={`${styles.puzzleNum} ${isPuzzleSolved ? styles.solvedNum : ""}`}>#{getPuzzleNum}</h2>
       <div className={styles.buttons}>
         {/* toggle to change the fill mode from filling cells to crossing them out */}
         <button onClick={undo} className={styles.undo}>
