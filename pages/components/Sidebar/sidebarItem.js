@@ -5,7 +5,7 @@ import styles from './Sidebar.module.scss'
 function SidebarItem(props) {
   const { link, title, toggleSidebar } = props;
   const [getPath, setPath] = useState(null);
-  const isExternalLink = link.startsWith('http') | link.startsWith('www');
+  const isExternalLink = link ? link.startsWith('http') | link.startsWith('www') : false;
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
