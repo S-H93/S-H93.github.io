@@ -8,3 +8,26 @@
   touch-action: none;
   font-family: 'Roboto', sans-serif;
 }
+
+.hasError {
+  animation: shake 1.5s;
+  transform: translateX(0);
+}
+
+@keyframes shake {
+  20%{
+    transform: translateX(-6px);
+  }
+  
+  40%{
+    transform: translateX(6px);
+  }
+
+  60%{
+    transform: translateX(-4px);
+  }
+
+  100%{
+    transform: translateX(0px);
+  }
+}
