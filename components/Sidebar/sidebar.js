@@ -27,6 +27,7 @@ function Sidebar() {
               <ul className={styles.list}>
                   <SidebarItem link="/" title="Home" toggleSidebar = { toggleSidebar } />
                   <SidebarItem link="/nonogram" title="Nonogram" toggleSidebar = { toggleSidebar } />
+                  <SidebarItem link="/wordgame" title="Wordle" toggleSidebar = { toggleSidebar } />
               </ul>
           </div>
       </div>

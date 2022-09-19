@@ -19,7 +19,9 @@
     "next": "^12.2.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "sass": "^1.54.4"
+    "sass": "^1.54.4",
+    "tmi.js": "^1.8.5",
+    "websocket": "^1.0.34"
   },
   "devDependencies": {
     "serve": "^14.0.1"
